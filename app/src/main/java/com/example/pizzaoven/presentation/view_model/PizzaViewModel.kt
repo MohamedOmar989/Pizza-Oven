@@ -48,23 +48,56 @@ class PizzaViewModel() : ViewModel() {
         _state.update { it.copy(pizzas = updatedPizzas) }
     }
 
+    fun onToppingSelected(toppingIndex: Int) {
+        val currentState = state.value
+        val selectedPizzaIndex = currentState.selectedPizzaIndex
+        val updatedPizzas = currentState.pizzas.toMutableList()
+        val selectedPizza = updatedPizzas[selectedPizzaIndex]
+
+        val updatedToppings = selectedPizza.topping.mapIndexed { index, topping ->
+            if (index == toppingIndex) {
+                topping.copy(isSelected = !topping.isSelected)
+            } else {
+                topping
+            }
+        }
+
+        val updatedPizza = selectedPizza.copy(topping = updatedToppings)
+        updatedPizzas[selectedPizzaIndex] = updatedPizza
+
+        val updatedGlobalToppings = currentState.topping.mapIndexed { index, topping ->
+            if (index == toppingIndex) {
+                topping.copy(isSelected = !topping.isSelected)
+            } else {
+                topping
+            }
+        }
+
+        _state.update {
+            it.copy(
+                pizzas = updatedPizzas,
+                topping = updatedGlobalToppings
+            )
+        }
+    }
+
     private fun getPizzaList(): List<Pizza> {
         return listOf(
-            Pizza(R.drawable.bread_1,topping=getTopping(),price = 15),
-            Pizza(R.drawable.bread_2,topping=getTopping(),price = 15),
-            Pizza(R.drawable.bread_3,topping=getTopping(),price = 20),
-            Pizza(R.drawable.bread_4,topping=getTopping(),price = 25),
-            Pizza(R.drawable.bread_5,topping=getTopping(),price = 10),
+            Pizza(R.drawable.bread_1, topping = getTopping(), price = 15),
+            Pizza(R.drawable.bread_2, topping = getTopping(), price = 15),
+            Pizza(R.drawable.bread_3, topping = getTopping(), price = 20),
+            Pizza(R.drawable.bread_4, topping = getTopping(), price = 25),
+            Pizza(R.drawable.bread_5, topping = getTopping(), price = 10),
         )
     }
 
     fun getTopping(): List<Topping> {
         return listOf(
-            Topping(index=0,image=R.drawable.basil_3,price=5,ingredients=getListOfTopping("basil") ),
-            Topping(index=2,image=R.drawable.onion_3,price=5,ingredients=getListOfTopping("onion")),
-            Topping(index=1,image=R.drawable.broccoli_3,price=5,ingredients=getListOfTopping("broccoli")),
-            Topping(index=3,image=R.drawable.mushroom_3,price=5,ingredients=getListOfTopping("mushroom")),
-            Topping(index=4,image=R.drawable.sausage_3,price=5,ingredients=getListOfTopping("sausage")),
+            Topping(index = 0, image = R.drawable.basil_3, price = 5, ingredients = getListOfTopping("basil")),
+            Topping(index = 1, image = R.drawable.broccoli_3, price = 5, ingredients = getListOfTopping("broccoli")),
+            Topping(index = 2, image = R.drawable.onion_3, price = 5, ingredients = getListOfTopping("onion")),
+            Topping(index = 3, image = R.drawable.mushroom_3, price = 5, ingredients = getListOfTopping("mushroom")),
+            Topping(index = 4, image = R.drawable.sausage_3, price = 5, ingredients = getListOfTopping("sausage")),
         )
     }
 
@@ -137,5 +170,4 @@ class PizzaViewModel() : ViewModel() {
             else -> listOf()
         }
     }
-
 }

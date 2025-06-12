@@ -31,7 +31,7 @@ fun ToppingsRow(
         items(ingredients.size) { index ->
             val ingredient = ingredients[index]
             ToppingItem(
-                imageRes = painterResource( ingredient.image),
+                imageRes = painterResource(ingredient.image),
                 isSelected = ingredient.isSelected,
                 onClick = { onIngredientClick(index) },
                 modifier = Modifier.padding(end = 8.dp)

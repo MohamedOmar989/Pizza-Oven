@@ -16,17 +16,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.pizzaoven.domin.PizzaSize
-import com.example.pizzaoven.presentation.components.ToppingsRow
 import com.example.pizzaoven.presentation.components.PizzaButton
 import com.example.pizzaoven.presentation.components.PizzaImage
 import com.example.pizzaoven.presentation.components.SizeRow
 import com.example.pizzaoven.presentation.components.TopBar
-import com.example.pizzaoven.presentation.view_model.ui_state.PizzaScreenState
+import com.example.pizzaoven.presentation.components.ToppingsRow
 import com.example.pizzaoven.presentation.view_model.PizzaViewModel
+import com.example.pizzaoven.presentation.view_model.ui_state.PizzaScreenState
 
 @Composable
 fun PizzaScreen(
@@ -36,15 +35,17 @@ fun PizzaScreen(
     PizzaScreenContent(
         state = state,
         onPizzaSelected = viewModel::onPizzaSelected,
-        onPizzaSizeChanged = viewModel::onPizzaSizeChanged
+        onPizzaSizeChanged = viewModel::onPizzaSizeChanged,
+        onToppingSelected = viewModel::onToppingSelected
     )
 }
 
 @Composable
 fun PizzaScreenContent(
-    state : PizzaScreenState,
+    state: PizzaScreenState,
     onPizzaSelected: (Int) -> Unit,
-    onPizzaSizeChanged: (PizzaSize) -> Unit
+    onPizzaSizeChanged: (PizzaSize) -> Unit,
+    onToppingSelected: (Int) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -89,7 +90,7 @@ fun PizzaScreenContent(
         Spacer(Modifier.weight(0.6f))
         ToppingsRow(
             ingredients = state.topping,
-            onIngredientClick = {}
+            onIngredientClick = onToppingSelected
         )
         Spacer(modifier = Modifier.weight(1f))
         PizzaButton(
